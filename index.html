@@ -1,0 +1,2946 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✦ Zhu's Lair ✦</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ══════════════════════════════════════
+       DARK MODE (default — goth)
+    ══════════════════════════════════════ */
+    :root {
+      --bg:       #0a0009;
+      --bg2:      #0f000e;
+      --purple:   #7b2d8b;
+      --violet:   #9b4dca;
+      --lilac:    #c084f5;
+      --crimson:  #8b1a2f;
+      --rose:     #c8365a;
+      --text:     #e8ddf0;
+      --muted:    #8a7a98;
+      --border:   rgba(155, 77, 202, 0.18);
+      --glow:     rgba(155, 77, 202, 0.35);
+      --nav-bg:   rgba(10,0,9,0.95);
+      --surface:  rgba(123,45,139,0.08);
+      --fact-bg:  rgba(123,45,139,0.1);
+      --serif:    'Cinzel Decorative', serif;
+      --body-serif:'IM Fell English', Georgia, serif;
+      --sans:     'Inter', sans-serif;
+    }
+
+    /* ══════════════════════════════════════
+       LIGHT MODE — soft lavender gothic
+    ══════════════════════════════════════ */
+    html.light {
+      --bg:       #f5f0fa;
+      --bg2:      #ede4f7;
+      --purple:   #7b2d8b;
+      --violet:   #7c3aed;
+      --lilac:    #6d28d9;
+      --crimson:  #9f1239;
+      --rose:     #be185d;
+      --text:     #1e0a2e;
+      --muted:    #6b5b7b;
+      --border:   rgba(109, 40, 217, 0.2);
+      --glow:     rgba(109, 40, 217, 0.25);
+      --nav-bg:   rgba(245,240,250,0.95);
+      --surface:  rgba(109,40,217,0.06);
+      --fact-bg:  rgba(109,40,217,0.07);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body-serif);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* ── INTRO OVERLAY ──────────────────── */
+    #intro {
+      position: fixed; inset: 0; z-index: 2000;
+      background: #050004;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem; cursor: pointer;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+    #intro.hidden {
+      opacity: 0; visibility: hidden; pointer-events: none;
+    }
+    .intro-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(155,77,202,0.6);
+      border: 1px solid rgba(155,77,202,0.2);
+      padding: 0.3rem 1.2rem; border-radius: 999px;
+      margin-bottom: 0.5rem;
+    }
+    .intro-cat-wrap {
+      filter:
+        drop-shadow(0 0 18px rgba(155,77,202,0.6))
+        drop-shadow(0 0 40px rgba(155,77,202,0.25));
+      animation: cat-bob 2.5s ease-in-out infinite;
+    }
+    @keyframes cat-bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    .intro-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      letter-spacing: 0.08em; text-align: center;
+      background: linear-gradient(135deg, #c084f5, #e040fb, #9b4dca);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 24px rgba(155,77,202,0.5));
+      margin-top: 0.5rem;
+    }
+    .intro-sub {
+      font-family: 'IM Fell English', serif;
+      font-style: italic; font-size: 1rem;
+      color: #6a5578; text-align: center;
+    }
+    .intro-enter {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(155,77,202,0.55);
+      margin-top: 1rem;
+      animation: pulse-enter 2s ease-in-out infinite;
+    }
+    @keyframes pulse-enter {
+      0%,100% { opacity: 0.4; }
+      50%      { opacity: 1; }
+    }
+
+    /* ── Particle canvas ─────────────────── */
+    #particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+    /* ── Noise texture overlay ─────────────── */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events:none; opacity:0.4;
+    }
+
+    /* ── NAV ─────────────────────────────── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:200;
+      display: flex; justify-content:space-between; align-items:center;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, var(--nav-bg), transparent);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1rem; letter-spacing:.1em;
+      color: var(--lilac);
+      text-shadow: 0 0 20px var(--glow);
+    }
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem; letter-spacing:.14em; text-transform:uppercase;
+      color: var(--muted); text-decoration:none;
+      transition: color .2s, text-shadow .2s;
+    }
+    .nav-links a:hover {
+      color: var(--lilac);
+      text-shadow: 0 0 12px var(--glow);
+    }
+
+    /* ══════════════════════════════
+       BOOK OF LORE
+    ══════════════════════════════ */
+    .book-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      margin-top: 2.5rem; gap: 1.5rem;
+      position: relative; overflow: visible;
+    }
+    .book-scene {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .book-spread {
+      display: flex;
+      border-radius: 4px 6px 6px 4px;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(155,77,202,0.15),
+        0  0 40px rgba(100,30,130,0.2);
+      transition: transform 0.4s;
+    }
+    .book-page {
+      width: 280px; min-height: 380px;
+      background: #160c24;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    html.light .book-page { background: #f4eeff; }
+    .left-page  { border-radius: 4px 0 0 4px; }
+    .right-page { border-radius: 0 6px 6px 0; }
+    /* subtle page texture line */
+    .book-page::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        transparent, transparent 28px,
+        rgba(155,77,202,0.04) 28px, rgba(155,77,202,0.04) 29px
+      );
+      pointer-events: none;
+    }
+    .book-spine {
+      width: 20px; min-height: 380px; flex-shrink: 0;
+      background: linear-gradient(to right,
+        #0e0718 0%, #2d1060 30%, #3d1880 50%, #2d1060 70%, #0e0718 100%);
+      box-shadow: inset -3px 0 10px rgba(0,0,0,0.4), inset 3px 0 10px rgba(0,0,0,0.4);
+    }
+    html.light .book-spine {
+      background: linear-gradient(to right,
+        #c4a8e8 0%, #9b6dd6 30%, #7c3aed 50%, #9b6dd6 70%, #c4a8e8 100%);
+    }
+    .page-ornament {
+      position: absolute; top: 0.75rem;
+      font-size: 0.55rem; color: rgba(155,77,202,0.35);
+    }
+    .top-right { right: 0.9rem; }
+    .top-left  { left:  0.9rem; }
+    .page-inner {
+      padding: 2rem 1.6rem 2rem;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .page-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 0.9rem; color: var(--lilac); line-height: 1.3;
+      margin-bottom: 1rem; margin-top: 0.4rem; padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(155,77,202,0.2);
+    }
+    html.light .page-title { color: #5b21b6; }
+    .page-text {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.84rem; line-height: 1.95;
+      color: #9b87b8; font-style: italic; flex: 1;
+    }
+    html.light .page-text { color: #4c3568; }
+    .page-num {
+      display: block; text-align: center;
+      padding: 0.8rem 0 0.6rem;
+      font-family: 'Cinzel', serif; font-size: 0.6rem;
+      color: rgba(155,77,202,0.4); letter-spacing: 0.2em;
+      border-top: 1px solid rgba(155,77,202,0.1);
+    }
+    /* Nav buttons */
+    .book-nav-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--violet); cursor: pointer;
+      width: 38px; height: 38px; border-radius: 50%;
+      font-size: 0.85rem; flex-shrink: 0;
+      transition: all 0.25s; display: flex; align-items: center; justify-content: center;
+    }
+    .book-nav-btn:hover:not(:disabled) {
+      border-color: var(--violet);
+      background: rgba(155,77,202,0.12);
+      transform: scale(1.1);
+    }
+    .book-nav-btn:disabled { opacity: 0.25; cursor: default; }
+    /* Spread dots */
+    .book-dots {
+      display: flex; gap: 0.6rem; align-items: center;
+    }
+    .book-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border);
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .book-dot.active {
+      background: var(--violet);
+      transform: scale(1.3);
+    }
+    /* Responsive */
+    @media (max-width: 720px) {
+      .book-page { width: 150px; min-height: 320px; }
+      .page-title { font-size: 0.72rem; }
+      .page-text  { font-size: 0.75rem; }
+    }
+
+    /* ── Scroll Progress Bar ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, #c084f5, #f472b6, #818cf8);
+      box-shadow: 0 0 10px rgba(192,132,245,0.6);
+      pointer-events: none;
+    }
+    /* ── 3D card base ── */
+    .gc-card { transform-style: preserve-3d; will-change: transform; }
+
+    /* ── Theme Toggle Button ─────────────── */
+    #theme-toggle {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+      transition: border-color .3s, color .3s, background .3s, transform .3s;
+    }
+    #theme-toggle:hover {
+      border-color: var(--violet);
+      color: var(--lilac);
+      background: var(--surface);
+      transform: rotate(20deg);
+    }
+
+    /* ── SECTIONS wrapper ────────────────── */
+    section { position:relative; z-index:1; }
+
+    /* ── HERO ────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      flex-direction: column;
+      gap: 0;
+    }
+    .hero-deco-top {
+      font-size: 1.1rem; letter-spacing:.5em;
+      color: var(--violet); opacity:.5;
+      margin-bottom: 1.5rem;
+    }
+    .avatar-frame {
+      position: relative;
+      width: 220px; height: 220px;
+      margin: 0 auto 2rem;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* ── Spinning conic-gradient border ── */
+    .avatar-frame::before {
+      content: '';
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #c084f5 0%, #f472b6 20%,
+        #818cf8 40%, #e879f9 60%,
+        #f9a8d4 80%, #c084f5 100%
+      );
+      animation: spin-border 2.5s linear infinite;
+      z-index: 0;
+    }
+    @keyframes spin-border { to { transform: rotate(360deg); } }
+    /* ── Pulsing outer glow ring ── */
+    .avatar-frame::after {
+      content: '';
+      position: absolute; inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(192,132,245,0.25);
+      animation: pulse-glow 2.5s ease-in-out infinite;
+      z-index: 0;
+    }
+    @keyframes pulse-glow {
+      0%,100% { opacity:0.3; transform:scale(1); }
+      50%      { opacity:0.9; transform:scale(1.05); }
+    }
+    .avatar-frame img {
+      position: relative; z-index: 2;
+      width:100%; height:100%;
+      object-fit:cover; object-position:top;
+      border-radius:50%;
+      filter: none !important;
+      box-shadow:
+        0 0 24px rgba(155,77,202,0.45),
+        0 0 60px rgba(155,77,202,0.15);
+    }
+    html.light .avatar-frame img { filter: none !important; }
+    /* ── Orbiting cute icons ── */
+    .orb {
+      position: absolute; font-style: normal;
+      font-size: 0.9rem; color: var(--lilac);
+      z-index: 3; top: 50%; left: 50%;
+      animation: orbit var(--speed, 7s) linear infinite;
+      animation-delay: var(--d, 0s);
+      text-shadow: 0 0 8px var(--glow);
+    }
+    @keyframes orbit {
+      from { transform: translate(-50%,-50%) rotate(0deg)   translateX(132px) rotate(0deg);   }
+      to   { transform: translate(-50%,-50%) rotate(360deg) translateX(132px) rotate(-360deg); }
+    }
+
+    h1.hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      letter-spacing:.05em;
+      background: linear-gradient(135deg, #c084f5, #e040fb, #9b4dca, #7b2d8b);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      text-shadow: none;
+      filter: drop-shadow(0 0 30px rgba(155,77,202,0.5));
+      line-height: 1.1;
+      margin-bottom: .6rem;
+    }
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: .78rem; letter-spacing:.3em; text-transform:uppercase;
+      color: var(--muted); margin-bottom: 1.8rem;
+    }
+    .hero-bio {
+      font-family: var(--body-serif);
+      font-size:1.05rem; font-style:italic;
+      color: var(--muted); line-height:1.9;
+      max-width:500px; margin:0 auto 2.5rem;
+    }
+    .hero-ornament {
+      display:flex; align-items:center; gap:1rem;
+      justify-content:center; margin-bottom:2rem;
+      color:rgba(155,77,202,0.4); font-size:.85rem; letter-spacing:.4em;
+    }
+    .hero-ornament::before, .hero-ornament::after {
+      content:''; flex:1; max-width:80px; height:1px;
+      background: linear-gradient(to right, transparent, rgba(155,77,202,0.4));
+    }
+    .hero-ornament::after { background: linear-gradient(to left, transparent, rgba(155,77,202,0.4)); }
+    .hero-tags { display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; }
+    .hero-tag {
+      font-family:'Cinzel',serif;
+      font-size:.65rem; letter-spacing:.12em; text-transform:uppercase;
+      padding:.35rem 1rem;
+      border:1px solid var(--border);
+      color:var(--muted);
+      background: rgba(155,77,202,0.06);
+      transition:border-color .3s, color .3s;
+    }
+    .hero-tag:hover { border-color:var(--violet); color:var(--lilac); }
+
+    /* ── DIVIDER ─────────────────────────── */
+    .divider {
+      text-align:center; padding:1.5rem 0;
+      color:rgba(155,77,202,0.3); font-size:1.1rem; letter-spacing:.8em;
+      position:relative; z-index:1;
+    }
+
+    /* ── ABOUT ───────────────────────────── */
+    #about {
+      padding: 5rem 3rem;
+      max-width:900px; margin:0 auto;
+    }
+    .section-label {
+      font-family:'Cinzel',serif;
+      font-size:.7rem; letter-spacing:.25em; text-transform:uppercase;
+      color:var(--violet); margin-bottom:1rem;
+      display:flex; align-items:center; gap:.8rem;
+    }
+    .section-label::before {
+      content:''; width:24px; height:1px;
+      background:var(--violet); display:inline-block;
+    }
+    .section-title {
+      font-family:var(--serif);
+      font-size:clamp(1.8rem,4vw,3rem);
+      letter-spacing:.04em; line-height:1.1;
+      margin-bottom:2.5rem;
+    }
+    .section-title .accent { color:var(--lilac); }
+
+    .about-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;
+    }
+    .about-text p {
+      font-size:1rem; line-height:1.95; color:#b8aac8;
+      font-style:italic;
+    }
+    .about-text p + p { margin-top:1.1rem; }
+    .about-facts { display:flex; flex-direction:column; gap:.6rem; }
+    .fact-row {
+      display:flex; align-items:flex-start; gap:1rem;
+      padding:1rem 1.2rem;
+      background:var(--fact-bg);
+      border:1px solid var(--border);
+      border-left:2px solid var(--violet);
+    }
+    .fact-icon { font-size:1.1rem; flex-shrink:0; margin-top:.1rem; }
+    .fact-text { font-size:.88rem; color:#b8aac8; line-height:1.5; font-family:var(--sans); }
+    .fact-label { font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--violet); display:block; margin-bottom:.2rem; }
+
+    /* ── GAMES ───────────────────────────── */
+    #games {
+      padding: 5rem 3rem;
+      max-width:1100px; margin:0 auto;
+    }
+    /* ── GAMING CORNER — scrapbook ───────── */
+    #games {
+      position: relative;
+      padding: 4rem 2rem 5rem;
+      max-width: 1000px; margin: 0 auto;
+      overflow: visible;
+    }
+
+    /* floating deco icons scattered around the section */
+    .games-floats {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 0;
+      overflow: visible;
+    }
+    .gf {
+      position: absolute;
+      font-size: 1.3rem;
+      color: var(--lilac);
+      opacity: 0.55;
+      animation: gf-bob var(--speed, 3s) ease-in-out infinite alternate;
+    }
+    @keyframes gf-bob {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(var(--drift, -8px)) rotate(var(--rot, 5deg)); }
+    }
+
+    /* header */
+    .gc-label {
+      font-family: var(--sans);
+      font-size: 0.65rem; letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+    .gc-heading {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .gc-heading .accent-word {
+      background: linear-gradient(135deg, var(--lilac), var(--violet));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .gc-sub {
+      font-family: var(--body-serif);
+      font-size: 0.9rem; font-style: italic;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* 2×3 grid */
+    .gc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem;
+      margin-top: 2.2rem;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 680px) { .gc-grid { grid-template-columns: 1fr; } }
+
+    /* each card — horizontal layout */
+    .gc-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      position: relative;
+      transition: transform .35s, box-shadow .35s, border-color .35s;
+      cursor: default;
+    }
+    .gc-card:hover {
+      transform: translateY(-4px) scale(1.015);
+      box-shadow: 0 10px 30px rgba(155,77,202,0.2);
+      border-color: rgba(155,77,202,0.45);
+    }
+    /* alternate: even cards flip image to right */
+    .gc-card:nth-child(even) { flex-direction: row-reverse; }
+
+    /* tape strips */
+    .gc-tape {
+      position: absolute;
+      width: 32px; height: 12px;
+      background: rgba(155,77,202,0.2);
+      border-radius: 2px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .gc-tape.t1 { top: -5px; right: 18px; transform: rotate(4deg); }
+    .gc-tape.t2 { top: -5px; left: 18px; transform: rotate(-3deg); }
+
+    /* image */
+    .gc-img-wrap {
+      flex-shrink: 0;
+      width: 110px; height: 110px;
+      position: relative;
+    }
+    .gc-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      transition: transform .35s;
+    }
+    .gc-card:hover .gc-img {
+      transform: rotate(-2deg) scale(1.04);
+    }
+
+    /* text side */
+    .gc-info { flex: 1; min-width: 0; }
+    .gc-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.94rem; letter-spacing: .08em;
+      color: var(--text);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .gc-name .gc-heart { color: var(--lilac); font-size: 0.7rem; }
+    .gc-desc {
+      font-family: var(--body-serif);
+      font-size: 0.88rem; font-style: italic;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      line-height: 1.65;
+      display: flex; align-items: baseline; gap: 0.35rem;
+    }
+    .gc-desc .gc-bullet { color: var(--lilac); font-size: 0.65rem; flex-shrink: 0; }
+
+    /* status dot row */
+    .gc-status {
+      display: inline-flex; align-items: center; gap: .35rem;
+      margin-top: .6rem;
+      font-family: var(--sans);
+      font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .gc-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    /* hide old game-card styles if any linger */
+    .game-card, .game-sticker, .game-cover-wrap,
+    .game-emoji, .game-genre, .game-status, .status-dot,
+    .games-corner-title, .games-corner-sub, .games-deco-row { display: none; }
+
+    /* ── FAVORITE ARTISTS / MUSIC SECTION ─── */
+    #vibe {
+      position: relative;
+      padding: 5rem 2rem 6rem;
+      max-width: 1120px;
+      margin: 0 auto;
+      overflow: visible;
+    }
+
+    /* floating music notes / sparkles */
+    .music-floats {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 0;
+    }
+    .mf {
+      position: absolute;
+      font-size: 1.15rem;
+      color: var(--lilac);
+      opacity: 0.45;
+      animation: gf-bob var(--speed, 3.2s) ease-in-out infinite alternate;
+    }
+
+    /* ── BIG VINYL TURNTABLE SHOWCASE ── */
+    .music-player-bar.vinyl-showcase {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+      background: radial-gradient(circle at 20% 50%, rgba(35, 14, 52, 0.88), var(--surface) 70%);
+      border: 1.5px solid rgba(192, 132, 252, 0.35);
+      border-radius: 24px;
+      padding: 1.8rem 2.2rem;
+      margin: 2rem auto 2.5rem;
+      box-shadow: 0 16px 40px rgba(123, 45, 139, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 768px) {
+      .music-player-bar.vinyl-showcase {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+        padding: 1.5rem 1.2rem;
+      }
+    }
+
+    /* ── Big Turntable Deck ── */
+    .turntable-deck.big-turntable {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #180a24, #0b0310);
+      border: 2px solid rgba(192, 132, 252, 0.3);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+      cursor: pointer;
+    }
+    .turntable-deck.big-turntable:hover {
+      transform: scale(1.02);
+      border-color: rgba(192, 132, 252, 0.6);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.8), 0 0 24px rgba(192, 132, 252, 0.35);
+    }
+    .turntable-deck.big-turntable.is-playing {
+      border-color: rgba(192, 132, 252, 0.75);
+      box-shadow: inset 0 3px 10px rgba(0,0,0,0.8), 0 0 32px rgba(192, 132, 252, 0.5), 0 0 8px var(--lilac);
+    }
+    .turntable-power-light {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4a2160;
+      box-shadow: 0 0 2px rgba(0,0,0,0.6);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .turntable-deck.big-turntable.is-playing .turntable-power-light {
+      background: #c084f5;
+      box-shadow: 0 0 10px #c084f5, 0 0 4px #fff;
+    }
+
+    /* Platter */
+    .big-turntable .turntable-platter {
+      width: 182px;
+      height: 182px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #251234 60%, #15091e 90%, #301742 100%);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.6);
+      border: 2px solid rgba(192, 132, 252, 0.2);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Big Vinyl Record */
+    .big-turntable .turntable-vinyl {
+      width: 174px;
+      height: 174px;
+      border-radius: 50%;
+      position: relative;
+      background: radial-gradient(circle, #220e2e 20%, #0d0412 21%, #0d0412 50%, #1c0a27 51%, #07020a 82%);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.9);
+      animation: spin-vinyl 4s linear infinite;
+      animation-play-state: paused;
+      border: 1.5px solid rgba(192, 132, 252, 0.35);
+      overflow: hidden;
+      transition: box-shadow 0.4s ease;
+    }
+    .big-turntable.is-playing .turntable-vinyl {
+      animation-play-state: running;
+      box-shadow: 0 0 24px var(--glow), 0 0 6px var(--lilac);
+    }
+    @keyframes spin-vinyl {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .vinyl-groove-lines {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0px, transparent 3px, rgba(192, 132, 252, 0.08) 4px, transparent 6px);
+      pointer-events: none;
+    }
+    .vinyl-reflection {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(255,255,255,0.24) 0deg, transparent 40deg, transparent 140deg, rgba(255,255,255,0.24) 180deg, transparent 220deg, transparent 320deg, rgba(255,255,255,0.24) 360deg);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.8;
+    }
+    .vinyl-center-label {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(192, 132, 252, 0.7);
+      box-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 12px rgba(192, 132, 252, 0.4);
+      z-index: 2;
+    }
+    .vinyl-art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: none !important;
+    }
+    .vinyl-spindle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 30%, #d8b4fe 70%, #6b21a8 100%);
+      border: 1.5px solid #2e1042;
+      box-shadow: 0 0 6px #fff;
+      z-index: 3;
+    }
+
+    /* Big Tonearm */
+    .big-turntable .turntable-arm {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 50px; height: 130px;
+      pointer-events: none;
+      z-index: 5;
+      transform-origin: 35px 12px;
+      transform: rotate(-28deg);
+      transition: transform 0.8s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .big-turntable.is-playing .turntable-arm {
+      transform: rotate(20deg);
+    }
+    .arm-counterweight {
+      position: absolute;
+      top: 0; right: 28px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #d8b4fe 30%, #581c87 100%);
+      border: 1px solid var(--lilac);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    }
+    .arm-pivot {
+      position: absolute;
+      top: 4px; right: 8px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f3e8ff 20%, #9333ea 70%, #2e1042 100%);
+      border: 1.5px solid var(--lilac);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.8);
+    }
+    .arm-shaft {
+      position: absolute;
+      top: 22px; right: 16px;
+      width: 3px; height: 85px;
+      background: linear-gradient(180deg, #e9d5ff, #c084f5 40%, #7e22ce);
+      border-radius: 2px;
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      transform: rotate(5deg);
+    }
+    .arm-cartridge {
+      position: absolute;
+      bottom: 12px; right: 10px;
+      width: 10px; height: 16px;
+      background: linear-gradient(135deg, #c084f5, #581c87);
+      border-radius: 3px;
+      transform: rotate(20deg);
+      box-shadow: 0 0 8px var(--glow);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .big-turntable.is-playing .arm-cartridge {
+      box-shadow: 0 0 12px var(--lilac), 0 0 4px #fff;
+    }
+
+    /* ── Turntable Display Details (Right side) ── */
+    .turntable-display {
+      flex: 1;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .td-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .vinyl-showcase .player-track {
+      font-size: 1.25rem;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 0.04em;
+    }
+    .vinyl-showcase .player-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0.3rem 0 0;
+      line-height: 1.4;
+    }
+    .turntable-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.3rem;
+    }
+    .time-display {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--muted);
+      min-width: 34px;
+      letter-spacing: 0.05em;
+    }
+    .turntable-progress-bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid rgba(192, 132, 252, 0.2);
+    }
+    .turntable-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #7b2d8b, var(--lilac));
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.6);
+      transition: width 0.15s linear;
+    }
+    .turntable-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .td-header, .turntable-controls {
+        justify-content: center;
+      }
+    }
+    .tt-ctrl-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(192, 132, 252, 0.1);
+      border: 1.5px solid rgba(192, 132, 252, 0.3);
+      color: var(--lilac);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+    .tt-ctrl-btn:hover {
+      background: rgba(192, 132, 252, 0.25);
+      border-color: var(--lilac);
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+    }
+    .big-play-btn {
+      padding: 0.65rem 1.6rem;
+      font-size: 0.78rem;
+    }
+    .player-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .player-track {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+    .player-sub {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    /* Animated equalizer bars */
+    .player-eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+    .eq-bar {
+      width: 3px;
+      background: var(--lilac);
+      border-radius: 2px;
+      animation: eq-bounce 1.2s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 85%; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+    .eq-bar:nth-child(5) { height: 50%; animation-delay: 0.15s; }
+    @keyframes eq-bounce {
+      0% { height: 25%; }
+      50% { height: 95%; }
+      100% { height: 40%; }
+    }
+    .player-badge {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lilac);
+      background: rgba(192,132,252,0.12);
+      border: 1px solid rgba(192,132,252,0.25);
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Artist Cards Grid */
+    .artists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 480px) {
+      .artists-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .artist-card {
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .artist-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lilac), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .artist-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(192,132,252,0.5);
+      box-shadow: 0 10px 24px rgba(155,77,202,0.22);
+    }
+    .artist-card:hover::before {
+      opacity: 1;
+    }
+    .artist-card.active {
+      border-color: var(--lilac);
+      box-shadow: 0 0 24px var(--glow), 0 8px 24px rgba(155,77,202,0.25);
+      background: rgba(192,132,252,0.08);
+      transform: translateY(-3px);
+    }
+    .artist-card:active {
+      transform: scale(0.98);
+    }
+    /* Tape accent on top edge */
+    .artist-tape {
+      position: absolute;
+      top: -4px; right: 16px;
+      width: 26px; height: 10px;
+      background: rgba(192,132,252,0.22);
+      border: 1px solid rgba(192,132,252,0.3);
+      border-radius: 2px;
+      transform: rotate(3deg);
+      pointer-events: none;
+    }
+    .artist-num {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      color: var(--violet);
+      opacity: 0.75;
+      font-weight: 600;
+      min-width: 20px;
+      letter-spacing: 0.05em;
+    }
+    .artist-thumb-wrap {
+      width: 62px; height: 62px;
+      border-radius: 12px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .artist-thumb {
+      width: 100%; height: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border: 1.5px solid var(--border);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      filter: none !important;
+      position: relative;
+      z-index: 2;
+    }
+    html.light .artist-thumb { filter: none !important; }
+    .artist-card:hover .artist-thumb,
+    .artist-card.active .artist-thumb {
+      transform: scale(1.05) rotate(-2deg);
+      border-color: rgba(192,132,252,0.6);
+      box-shadow: 0 4px 14px rgba(155,77,202,0.3);
+    }
+
+    /* ── Mini Vinyl Record slipping out of sleeve ── */
+    .artist-vinyl-disc {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #250e30 18%, #0f0514 19%, #0f0514 46%, #220d2d 47%, #09020d 80%);
+      border: 1px solid rgba(192, 132, 252, 0.45);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      z-index: 1;
+      transform: translateX(0) rotate(0deg);
+      transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.35s ease, box-shadow 0.35s ease;
+      pointer-events: none;
+      opacity: 0;
+      overflow: hidden;
+    }
+    .artist-vinyl-disc::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0px, transparent 2px, rgba(192, 132, 252, 0.12) 3px, transparent 4px);
+    }
+    .artist-vinyl-disc::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--lilac);
+      border: 1.5px solid #000;
+      box-shadow: inset 0 0 3px rgba(0,0,0,0.8);
+    }
+    .avd-hole {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--bg);
+      z-index: 3;
+    }
+    .avd-shine {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(255,255,255,0.2) 0deg, transparent 45deg, transparent 135deg, rgba(255,255,255,0.2) 180deg, transparent 225deg, transparent 315deg, rgba(255,255,255,0.2) 360deg);
+      mix-blend-mode: screen;
+      z-index: 2;
+    }
+
+    /* Peeks out on hover or active */
+    .artist-card:hover .artist-vinyl-disc {
+      opacity: 0.9;
+      transform: translateX(18px) rotate(45deg);
+    }
+    .artist-card.active .artist-vinyl-disc {
+      opacity: 1;
+      transform: translateX(24px) rotate(90deg);
+      box-shadow: 0 0 12px var(--glow), 0 3px 10px rgba(0,0,0,0.6);
+    }
+
+    /* When song is playing, it slides out and spins continuously! */
+    .artist-card.is-playing .artist-vinyl-disc {
+      opacity: 1;
+      transform: translateX(26px);
+      animation: spin-artist-vinyl 3.2s linear infinite;
+      box-shadow: 0 0 16px var(--glow), 0 0 5px var(--lilac), 0 4px 12px rgba(0,0,0,0.7);
+    }
+    @keyframes spin-artist-vinyl {
+      0%   { transform: translateX(26px) rotate(0deg); }
+      100% { transform: translateX(26px) rotate(360deg); }
+    }
+    .artist-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .artist-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.98rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+    .artist-arrow {
+      font-size: 0.75rem;
+      color: var(--lilac);
+      opacity: 0.4;
+      transform: translateX(-2px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .artist-card:hover .artist-arrow,
+    .artist-card.active .artist-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .artist-heart {
+      color: var(--lilac);
+      font-size: 0.7rem;
+      opacity: 0.6;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .artist-card:hover .artist-heart,
+    .artist-card.active .artist-heart {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+    .artist-play-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(192, 132, 252, 0.12);
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      color: var(--lilac);
+      font-size: 0.65rem;
+      line-height: 1;
+      opacity: 0.55;
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+    }
+    .artist-card:hover .artist-play-indicator {
+      opacity: 0.95;
+      transform: scale(1.12);
+      border-color: var(--lilac);
+    }
+    .artist-card.active .artist-play-indicator {
+      opacity: 1;
+      background: rgba(192, 132, 252, 0.28);
+      border-color: var(--lilac);
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.45);
+      color: #fff;
+    }
+    .artist-card.is-playing .artist-play-indicator {
+      animation: pulse-ring 2s infinite ease-out;
+    }
+    .artist-vibe {
+      font-family: var(--body-serif);
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      line-height: 1.5;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: normal;
+    }
+
+    /* ── Floating & Section Audio Player ── */
+    .player-play-btn {
+      background: linear-gradient(135deg, rgba(123, 45, 139, 0.35), rgba(155, 77, 202, 0.25));
+      border: 1.5px solid rgba(192, 132, 252, 0.45);
+      color: var(--lilac);
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .player-play-btn:hover {
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 0 16px var(--glow);
+    }
+    .player-play-btn:active {
+      transform: scale(0.95);
+    }
+    .player-play-btn.is-playing {
+      background: linear-gradient(135deg, var(--rose), var(--crimson));
+      border-color: rgba(200, 54, 90, 0.5);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(200, 54, 90, 0.4);
+    }
+
+    /* Fixed Floating Music Player Widget (plays while scrolling) */
+    .floating-player {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 1500;
+      background: rgba(15, 0, 14, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px 6px 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+    }
+    html.light .floating-player {
+      background: rgba(245, 240, 250, 0.92);
+      box-shadow: 0 8px 24px rgba(109, 40, 217, 0.2);
+    }
+    .floating-player:hover {
+      border-color: rgba(192, 132, 252, 0.65);
+      box-shadow: 0 12px 36px rgba(155, 77, 202, 0.35);
+      transform: translateY(-3px);
+    }
+    .fp-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fp-disc-wrap {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 0 10px var(--glow);
+      flex-shrink: 0;
+      transition: box-shadow 0.4s ease;
+    }
+    .fp-disc-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(255,255,255,0.25) 0deg, transparent 40deg, transparent 140deg, rgba(255,255,255,0.25) 180deg, transparent 220deg, transparent 320deg, rgba(255,255,255,0.25) 360deg);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.7;
+      z-index: 2;
+    }
+    .floating-player.is-playing .fp-disc-wrap {
+      box-shadow: 0 0 16px var(--glow), 0 0 6px var(--lilac);
+    }
+    .fp-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: none !important;
+    }
+    .fp-center-hole {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      z-index: 3;
+    }
+    .floating-player.is-playing .fp-thumb {
+      animation: spin-disc 4s linear infinite;
+    }
+    .fp-info {
+      display: flex;
+      flex-direction: column;
+      max-width: 160px;
+    }
+    .fp-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+    }
+    .fp-artist {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .fp-tag {
+      color: var(--lilac);
+    }
+    .fp-progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(155, 77, 202, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .fp-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--lilac);
+      border-radius: 2px;
+      transition: width 0.15s linear;
+    }
+    .fp-eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 16px;
+      margin: 0 4px;
+    }
+    .fp-bar {
+      width: 2.5px;
+      height: 4px;
+      background: var(--lilac);
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+    .floating-player.is-playing .fp-bar {
+      animation: eq-bounce 1.2s ease-in-out infinite alternate;
+    }
+    .floating-player.is-playing .fp-bar:nth-child(1) { animation-delay: 0.1s; }
+    .floating-player.is-playing .fp-bar:nth-child(2) { animation-delay: 0.3s; }
+    .floating-player.is-playing .fp-bar:nth-child(3) { animation-delay: 0.15s; }
+    .floating-player.is-playing .fp-bar:nth-child(4) { animation-delay: 0.4s; }
+
+    .fp-play-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--purple));
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.75rem;
+      box-shadow: 0 0 10px rgba(155, 77, 202, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .fp-play-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 16px rgba(192, 132, 252, 0.6);
+    }
+    .fp-play-btn:active {
+      transform: scale(0.92);
+    }
+    .floating-player.is-playing .fp-play-btn {
+      background: linear-gradient(135deg, var(--rose), var(--crimson));
+      border-color: rgba(200, 54, 90, 0.5);
+    }
+
+    @media (max-width: 600px) {
+      .floating-player {
+        bottom: 14px;
+        right: 14px;
+        padding: 5px 10px 5px 6px;
+      }
+      .fp-info {
+        max-width: 105px;
+      }
+    }
+
+    /* ── SHRINE (quote) ─────────────────── */
+    #shrine {
+      padding:6rem 2rem;
+      text-align:center;
+      background:linear-gradient(to bottom, transparent, rgba(123,45,139,0.08), transparent);
+    }
+    .shrine-inner { max-width:620px; margin:0 auto; }
+    .shrine-ornament { color:var(--violet); font-size:1.5rem; letter-spacing:.5em; opacity:.5; margin-bottom:2rem; }
+    blockquote {
+      font-family:var(--body-serif);
+      font-size:clamp(1.1rem,2.5vw,1.5rem);
+      font-style:italic; line-height:1.8;
+      color:#c8b8d8;
+    }
+    cite {
+      display:block; margin-top:1.5rem;
+      font-family:'Cinzel',serif;
+      font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+      color:var(--muted); font-style:normal;
+    }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      position:relative; z-index:1;
+      border-top:1px solid var(--border);
+      padding:2.5rem 3rem;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .footer-logo { font-family:var(--serif); font-size:.85rem; color:var(--violet); }
+    footer p { font-family:var(--sans); font-size:.75rem; color:var(--muted); }
+
+    /* ── Responsive ──────────────────────── */
+    @media(max-width:720px){
+      nav { padding:1rem 1.4rem; }
+      .nav-links { gap:1.2rem; }
+      #about, #games, #vibe { padding:4rem 1.4rem; }
+      .about-grid, .vibe-grid { grid-template-columns:1fr; }
+      footer { flex-direction:column; gap:.5rem; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- FLOATING MUSIC PLAYER (Plays while scrolling) -->
+<div id="floating-player" class="floating-player">
+  <div class="fp-inner">
+    <div class="fp-disc-wrap">
+      <img src="artists/conan_gray.jpg" alt="Conan Gray" class="fp-thumb" id="fp-thumb"/>
+      <div class="fp-center-hole"></div>
+    </div>
+    <div class="fp-info">
+      <div class="fp-title" id="fp-title">The Moths</div>
+      <div class="fp-artist" id="fp-artist">Conan Gray • <span class="fp-tag">Wishbone</span></div>
+      <div class="fp-progress-bar"><div class="fp-progress-fill" id="fp-progress-fill"></div></div>
+    </div>
+    <div class="fp-eq" id="fp-eq">
+      <span class="fp-bar"></span>
+      <span class="fp-bar"></span>
+      <span class="fp-bar"></span>
+      <span class="fp-bar"></span>
+    </div>
+    <button class="fp-play-btn" id="fp-play-btn" title="Play 'The Moths' by Conan Gray">
+      <span id="fp-play-icon">▶</span>
+    </button>
+  </div>
+</div>
+
+<!-- Native HTML5 audio player for Zhu's Mixtape (plays while scrolling across all 15 artists) -->
+<audio id="site-audio" preload="auto">
+  <source src="audio/the_moths.m4a" type="audio/mp4">
+  <source src="audio/the_moths.webm" type="audio/webm">
+</audio>
+
+<!-- ── INTRO OVERLAY ───────────────────── -->
+<div id="intro">
+  <p class="intro-badge">✦ welcome ✦</p>
+  <div class="intro-cat-wrap">
+    <canvas id="catCanvas"></canvas>
+  </div>
+  <h2 class="intro-title">Zhu's Lair</h2>
+  <p class="intro-sub">— gamer. dark theme enjoyer. just vibing. —</p>
+  <p class="intro-enter">click anywhere to enter →</p>
+</div>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ Zhu's Lair</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#vibe">Music</a></li>
+  </ul>
+  <button id="theme-toggle" title="Toggle light / dark mode">🌙</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-deco-top">✦ ✦ ✦</div>
+
+  <div class="avatar-frame">
+    <img src="avatar.jpg" alt="Zhu"/>
+    <i class="orb" style="--d:0s;    --speed:7s">✦</i>
+    <i class="orb" style="--d:-1.75s; --speed:7s">♡</i>
+    <i class="orb" style="--d:-3.5s;  --speed:7s">★</i>
+    <i class="orb" style="--d:-5.25s; --speed:7s">✿</i>
+  </div>
+
+  <p class="hero-title">— welcome to my corner of the internet —</p>
+  <h1 class="hero-name">Zhu</h1>
+
+  <div class="hero-ornament">✦ ✦ ✦</div>
+
+  <p class="hero-bio">
+    loud in the group chat. silent in person.<br/>
+    chronically online & academically cooked. ⋆‧°𓏲ּ𝄢
+  </p>
+
+  <div class="hero-tags">
+    <span class="hero-tag">Gamer (always losing)</span>
+    <span class="hero-tag">Chronically Online</span>
+    <span class="hero-tag">Student (barely surviving)</span>
+    <span class="hero-tag">Music Listener</span>
+    <span class="hero-tag">Quiet IRL</span>
+    <span class="hero-tag">Accidental Web Dev</span>
+  </div>
+</section>
+
+<div class="divider">✦ · · · ✦ · · · ✦</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">About Me</p>
+  <h2 class="section-title">The <span class="accent">Lore</span></h2>
+
+  <!-- Book of Lore -->
+  <div class="book-wrap">
+    <div class="book-scene" id="bio-book">
+      <button class="book-nav-btn" id="book-prev" disabled>❮</button>
+
+      <div class="book-spread" id="book-spread">
+        <!-- Left page -->
+        <div class="book-page left-page">
+          <div class="page-ornament top-right">✦</div>
+          <div class="page-inner">
+            <h3 class="page-title" id="ltitle"></h3>
+            <p class="page-text" id="ltext"></p>
+          </div>
+          <span class="page-num" id="lnum"></span>
+        </div>
+
+        <!-- Spine -->
+        <div class="book-spine"></div>
+
+        <!-- Right page -->
+        <div class="book-page right-page">
+          <div class="page-ornament top-left">✦</div>
+          <div class="page-inner">
+            <h3 class="page-title" id="rtitle"></h3>
+            <p class="page-text" id="rtext"></p>
+          </div>
+          <span class="page-num" id="rnum"></span>
+        </div>
+      </div>
+
+      <button class="book-nav-btn" id="book-next">❯</button>
+    </div>
+
+    <!-- Spread indicator dots -->
+    <div class="book-dots" id="book-dots"></div>
+  </div>
+</section>
+
+<div class="divider">✦ · · · ✦ · · · ✦</div>
+
+<!-- GAMES -->
+<!-- GAMES -->
+<section id="games">
+  <!-- floating deco icons -->
+  <div class="games-floats" aria-hidden="true">
+    <span class="gf" style="top:5%;  left:-2%;  --speed:3.2s; --drift:-10px; --rot:8deg">&#9825;</span>
+    <span class="gf" style="top:10%; right:-1%; --speed:2.8s; --drift:-6px;  --rot:-6deg">&#10022;</span>
+    <span class="gf" style="top:28%; left:-3%;  --speed:3.6s; --drift:-12px; --rot:4deg; font-size:1rem">&#9733;</span>
+    <span class="gf" style="top:50%; right:-2%; --speed:3s;   --drift:-8px;  --rot:-5deg">&#9825;</span>
+    <span class="gf" style="top:72%; left:-2%;  --speed:2.5s; --drift:-7px;  --rot:6deg">&#10022;</span>
+    <span class="gf" style="top:88%; right:-1%; --speed:3.4s; --drift:-9px;  --rot:-8deg; font-size:1rem">&#9733;</span>
+    <span class="gf" style="top:2%;  left:12%;  --speed:4s;   --drift:-6px;  --rot:3deg; font-size:0.9rem">&#183;</span>
+    <span class="gf" style="top:45%; left:-1%;  --speed:2.9s; --drift:-11px; --rot:7deg; font-size:0.85rem">&#183;</span>
+    <span class="gf" style="top:65%; right:0%;  --speed:3.1s; --drift:-5px;  --rot:-4deg">&#9825;</span>
+    <span class="gf" style="top:35%; right:-3%; --speed:3.8s; --drift:-10px; --rot:5deg; font-size:0.9rem">&#10023;</span>
+  </div>
+
+  <p class="gc-label">&#8212; my little &#8212;</p>
+  <h2 class="gc-heading">Gaming <span class="accent-word">Corner</span></h2>
+  <p class="gc-sub">just a girl with too many games and not enough storage... &#9825;</p>
+
+  <div class="gc-grid">
+
+    <div class="gc-card">
+      <span class="gc-tape t1"></span>
+      <div class="gc-img-wrap">
+        <img src="games/valorant.png" alt="Valorant" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Valorant</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> aim.exe has stopped working</p>
+        <div class="gc-status"><div class="gc-dot"></div> Currently Playing</div>
+      </div>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tape t2"></span>
+      <div class="gc-img-wrap">
+        <img src="games/roblox.png" alt="Roblox" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Roblox</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> unemployed in every universe</p>
+        <div class="gc-status"><div class="gc-dot"></div> On Rotation</div>
+      </div>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tape t1"></span>
+      <div class="gc-img-wrap">
+        <img src="games/mlbb.png" alt="Mobile Legends" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Mobile Legends</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> my teammates are the problem</p>
+        <div class="gc-status"><div class="gc-dot"></div> Ranked Grind</div>
+      </div>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tape t2"></span>
+      <div class="gc-img-wrap">
+        <img src="games/codm.jpg" alt="Call of Duty" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Call of Duty</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> bullets &amp; bad aim</p>
+        <div class="gc-status"><div class="gc-dot"></div> Currently Playing</div>
+      </div>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tape t1"></span>
+      <div class="gc-img-wrap">
+        <img src="games/tetrio.png" alt="Tetr.io" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Tetr.io</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> falling block enthusiast</p>
+        <div class="gc-status"><div class="gc-dot"></div> Suffering Happily</div>
+      </div>
+    </div>
+
+    <div class="gc-card">
+      <span class="gc-tape t2"></span>
+      <div class="gc-img-wrap">
+        <img src="games/steam.png" alt="Steam" class="gc-img"/>
+      </div>
+      <div class="gc-info">
+        <div class="gc-name"><span class="gc-heart">&#9825;</span> Steam</div>
+        <p class="gc-desc"><span class="gc-bullet">&#9825;</span> collecting games I'll never play</p>
+        <div class="gc-status"><div class="gc-dot"></div> Always Online</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider">✦ · · · ✦ · · · ✦</div>
+
+<!-- FAVORITE ARTISTS -->
+<section id="vibe">
+  <!-- floating music notes & sparkles -->
+  <div class="music-floats" aria-hidden="true">
+    <span class="mf" style="top:4%;  left:2%;   --speed:3.4s; --drift:-10px; --rot:10deg">♪</span>
+    <span class="mf" style="top:12%; right:3%;  --speed:2.9s; --drift:-7px;  --rot:-8deg">♫</span>
+    <span class="mf" style="top:32%; left:-1%;  --speed:3.8s; --drift:-12px; --rot:6deg">♡</span>
+    <span class="mf" style="top:52%; right:1%;  --speed:3.1s; --drift:-8px;  --rot:-5deg">✦</span>
+    <span class="mf" style="top:74%; left:1%;   --speed:2.7s; --drift:-9px;  --rot:7deg">♩</span>
+    <span class="mf" style="top:92%; right:2%;  --speed:3.5s; --drift:-11px; --rot:-9deg">♬</span>
+    <span class="mf" style="top:8%;  left:18%;  --speed:4.2s; --drift:-6px;  --rot:4deg">✧</span>
+    <span class="mf" style="top:60%; left:3%;   --speed:3.3s; --drift:-10px; --rot:5deg">♡</span>
+  </div>
+
+  <p class="section-label">Heavy Rotation</p>
+  <h2 class="section-title">Favorite <span class="accent">Artists</span></h2>
+
+  <!-- Big Vinyl Turntable Showcase Deck -->
+  <div class="music-player-bar vinyl-showcase" id="music-player-bar">
+    <div class="turntable-deck big-turntable" id="turntable-deck" title="Vinyl Turntable • Click to toggle playback">
+      <div class="turntable-platter">
+        <div class="turntable-vinyl" id="section-player-disc">
+          <div class="vinyl-groove-lines"></div>
+          <div class="vinyl-reflection"></div>
+          <div class="vinyl-center-label">
+            <img src="artists/conan_gray.jpg" alt="Now Playing" id="vinyl-center-art" class="vinyl-art-img"/>
+            <div class="vinyl-spindle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="turntable-arm">
+        <div class="arm-counterweight"></div>
+        <div class="arm-pivot"></div>
+        <div class="arm-shaft"></div>
+        <div class="arm-cartridge"></div>
+      </div>
+      <div class="turntable-power-light"></div>
+    </div>
+
+    <div class="turntable-display">
+      <div class="td-header">
+        <div class="player-badge">
+          <span>●</span> ON REPEAT ♡
+        </div>
+        <div class="player-eq" id="section-player-eq" title="Audio playing">
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+          <span class="eq-bar"></span>
+        </div>
+      </div>
+
+      <div class="player-info">
+        <h3 class="player-track" id="section-player-track">Conan Gray — The Moths</h3>
+        <p class="player-sub" id="section-player-sub">The Moths • romanticizing my own sadness ♡</p>
+      </div>
+
+      <!-- Scrubber & Time -->
+      <div class="turntable-progress-wrap">
+        <span class="time-display" id="time-current">0:00</span>
+        <div class="turntable-progress-bar" id="tt-progress-bar" title="Click to seek">
+          <div class="turntable-progress-fill" id="tt-progress-fill"></div>
+        </div>
+        <span class="time-display" id="time-total">3:05</span>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="turntable-controls">
+        <button class="tt-ctrl-btn" id="prev-track-btn" title="Previous Artist">⏮</button>
+        <button class="player-play-btn big-play-btn" id="section-play-btn" title="Play 'The Moths' while scrolling">
+          <span id="section-play-icon">▶</span> <span id="section-play-text">PLAY SONG</span>
+        </button>
+        <button class="tt-ctrl-btn" id="next-track-btn" title="Next Artist">⏭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15 Artist Cards Grid -->
+  <div class="artists-grid">
+
+    <!-- 01 Mitski -->
+    <a href="https://open.spotify.com/search/Mitski" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Mitski" data-track="First Love / Late Spring" data-audio="audio/mitski.m4a" data-thumb="artists/mitski.jpg" data-sub="First Love / Late Spring • for the feelings words cannot hold ♡" title="Click to play 'First Love / Late Spring' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">01</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/mitski.jpg" alt="Mitski" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Mitski</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">for the feelings words cannot hold</div>
+      </div>
+    </a>
+
+    <!-- 02 NIKI -->
+    <a href="https://open.spotify.com/search/NIKI" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="NIKI" data-track="lowkey" data-audio="audio/niki.m4a" data-thumb="artists/niki.jpg" data-sub="lowkey • a little heartbreak, a little healing ♡" title="Click to play 'lowkey' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">02</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/niki.jpg" alt="NIKI" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>NIKI</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">a little heartbreak, a little healing</div>
+      </div>
+    </a>
+
+    <!-- 03 Conan Gray (Featured: The Moths) -->
+    <a href="https://open.spotify.com/search/Conan%20Gray%20Moths" target="_blank" rel="noopener noreferrer" class="artist-card active" data-artist="Conan Gray" data-track="The Moths" data-audio="audio/the_moths.m4a" data-thumb="artists/conan_gray.jpg" data-sub="The Moths • romanticizing my own sadness ♡" title="Click to play 'The Moths' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">03</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/conan_gray.jpg" alt="Conan Gray" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Conan Gray</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">romanticizing my own sadness</div>
+      </div>
+    </a>
+
+    <!-- 04 Sabrina Carpenter -->
+    <a href="https://open.spotify.com/search/Sabrina%20Carpenter" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Sabrina Carpenter" data-track="Espresso" data-audio="audio/sabrina_carpenter.m4a" data-thumb="artists/sabrina_carpenter.jpg" data-sub="Espresso • sweet melodies, questionable decisions ♡" title="Click to play 'Espresso' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">04</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/sabrina_carpenter.jpg" alt="Sabrina Carpenter" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Sabrina Carpenter</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">sweet melodies, questionable decisions</div>
+      </div>
+    </a>
+
+    <!-- 05 sombr -->
+    <a href="https://open.spotify.com/search/sombr" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="sombr" data-track="Caroline" data-audio="audio/sombr.m4a" data-thumb="artists/sombr.jpg" data-sub="Caroline • somewhere between love and longing ♡" title="Click to play 'Caroline' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">05</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/sombr.jpg" alt="sombr" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>sombr</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">somewhere between love and longing</div>
+      </div>
+    </a>
+
+    <!-- 06 IVOS -->
+    <a href="https://open.spotify.com/search/IV%20of%20Spades" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="IVOS" data-track="Mundo" data-audio="audio/ivos.m4a" data-thumb="artists/ivos.jpg" data-sub="Mundo • a soundtrack for quiet moments ♡" title="Click to play 'Mundo' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">06</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/ivos.jpg" alt="IVOS" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>IVOS</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">a soundtrack for quiet moments</div>
+      </div>
+    </a>
+
+    <!-- 07 Daniel Caesar -->
+    <a href="https://open.spotify.com/search/Daniel%20Caesar" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Daniel Caesar" data-track="Get You" data-audio="audio/daniel_caesar.m4a" data-thumb="artists/daniel_caesar.jpg" data-sub="Get You • love sounds better in his voice ♡" title="Click to play 'Get You' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">07</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/daniel_caesar.jpg" alt="Daniel Caesar" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Daniel Caesar</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">love sounds better in his voice</div>
+      </div>
+    </a>
+
+    <!-- 08 Oasis -->
+    <a href="https://open.spotify.com/search/Oasis" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Oasis" data-track="Wonderwall" data-audio="audio/oasis.m4a" data-thumb="artists/oasis.jpg" data-sub="Wonderwall • forever chasing the wonderwall ♡" title="Click to play 'Wonderwall' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">08</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/oasis.jpg" alt="Oasis" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Oasis</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">forever chasing the wonderwall</div>
+      </div>
+    </a>
+
+    <!-- 09 My Chemical Romance -->
+    <a href="https://open.spotify.com/search/My%20Chemical%20Romance" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="My Chemical Romance" data-track="Welcome to the Black Parade" data-audio="audio/mcr.m4a" data-thumb="artists/mcr.jpg" data-sub="Welcome to the Black Parade • for the beautifully misunderstood ♡" title="Click to play 'Welcome to the Black Parade' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">09</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/mcr.jpg" alt="My Chemical Romance" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>My Chemical Romance</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">for the beautifully misunderstood</div>
+      </div>
+    </a>
+
+    <!-- 10 LANY -->
+    <a href="https://open.spotify.com/search/LANY" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="LANY" data-track="ILYSB" data-audio="audio/lany.m4a" data-thumb="artists/lany.jpg" data-sub="ILYSB • midnight thoughts and distant memories ♡" title="Click to play 'ILYSB' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">10</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/lany.jpg" alt="LANY" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>LANY</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">midnight thoughts and distant memories</div>
+      </div>
+    </a>
+
+    <!-- 11 Olivia Rodrigo -->
+    <a href="https://open.spotify.com/search/Olivia%20Rodrigo" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Olivia Rodrigo" data-track="vampire" data-audio="audio/olivia_rodrigo.m4a" data-thumb="artists/olivia_rodrigo.jpg" data-sub="vampire • turning heartbreak into an art form ♡" title="Click to play 'vampire' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">11</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/olivia_rodrigo.jpg" alt="Olivia Rodrigo" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Olivia Rodrigo</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">turning heartbreak into an art form</div>
+      </div>
+    </a>
+
+    <!-- 12 Clairo -->
+    <a href="https://open.spotify.com/search/Clairo" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Clairo" data-track="Sofia" data-audio="audio/clairo.m4a" data-thumb="artists/clairo.jpg" data-sub="Sofia • soft sounds for softer days ♡" title="Click to play 'Sofia' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">12</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/clairo.jpg" alt="Clairo" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Clairo</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">soft sounds for softer days</div>
+      </div>
+    </a>
+
+    <!-- 13 Laufey -->
+    <a href="https://open.spotify.com/search/Laufey" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Laufey" data-track="From the Start" data-audio="audio/laufey.m4a" data-thumb="artists/laufey.jpg" data-sub="From the Start • born in the wrong musical era ♡" title="Click to play 'From the Start' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">13</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/laufey.jpg" alt="Laufey" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Laufey</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">born in the wrong musical era</div>
+      </div>
+    </a>
+
+    <!-- 14 One Direction -->
+    <a href="https://open.spotify.com/search/One%20Direction" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="One Direction" data-track="Night Changes" data-audio="audio/one_direction.m4a" data-thumb="artists/one_direction.jpg" data-sub="Night Changes • forever stuck in my teenage dreams ♡" title="Click to play 'Night Changes' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">14</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/one_direction.jpg" alt="One Direction" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>One Direction</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">forever stuck in my teenage dreams</div>
+      </div>
+    </a>
+
+    <!-- 15 Frank Ocean -->
+    <a href="https://open.spotify.com/search/Frank%20Ocean" target="_blank" rel="noopener noreferrer" class="artist-card" data-artist="Frank Ocean" data-track="Pink + White" data-audio="audio/frank_ocean.m4a" data-thumb="artists/frank_ocean.jpg" data-sub="Pink + White • feelings hidden between the melodies ♡" title="Click to play 'Pink + White' • ↗ Spotify">
+      <span class="artist-tape"></span>
+      <span class="artist-num">15</span>
+      <div class="artist-thumb-wrap">
+        <img src="artists/frank_ocean.jpg" alt="Frank Ocean" class="artist-thumb"/>
+        <div class="artist-vinyl-disc"><div class="avd-shine"></div><div class="avd-hole"></div></div>
+      </div>
+      <div class="artist-meta">
+        <div class="artist-name">
+          <span>Frank Ocean</span>
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <span class="artist-play-indicator" title="Play on website">▶</span>
+            <span class="artist-arrow" title="Open Spotify">↗</span>
+            <span class="artist-heart">♡</span>
+          </div>
+        </div>
+        <div class="artist-vibe">feelings hidden between the melodies</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- SHRINE / QUOTE -->
+<section id="shrine">
+  <div class="shrine-inner">
+    <div class="shrine-ornament">✦ ✦ ✦</div>
+    <blockquote>
+      "A little shy, chronically online, academically exhausted,<br/>
+      creatively curious, and occasionally competitive.<br/><br/>
+      <em>Loud on the internet, quiet in person, and somehow always<br/>
+      busy doing absolutely everything except what I'm supposed to be doing.</em>"
+    </blockquote>
+    <cite>— Zhu, in her own words ⋆‧°𓏲ּ𝄢</cite>
+    <div class="shrine-ornament" style="margin-top:2rem;">✦ ✦ ✦</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">✦ Zhu</div>
+  <p>🖤 not a professional. just someone having fun. 🖤</p>
+</footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ── Theme Toggle ── */
+  const btn  = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Load saved preference
+  const saved = localStorage.getItem('zhu-theme');
+  if (saved === 'light') { html.classList.add('light'); btn.textContent = '☀️'; }
+
+  btn.addEventListener('click', () => {
+    const isLight = html.classList.toggle('light');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('zhu-theme', isLight ? 'light' : 'dark');
+  });
+
+/* ── Pixel Cat + Intro ── */
+(function () {
+  const PS = 15; // size of each "pixel" in real px
+
+  const BK = '#1a0a2e'; // body: dark purple-black
+  const EY = '#d8b4fe'; // eyes: soft lilac
+  const NS = '#f472b6'; // nose: pink
+  const ER = '#5b21b6'; // inner ear: violet
+  const __ = null;      // transparent
+
+  // Frame 1 — arm extended horizontally (waving out)
+  const F1 = [
+    [__,__,BK,BK,__,__,__,__,__,__,BK,BK,__,__,__,__],
+    [__,BK,BK,BK,BK,__,__,__,__,BK,BK,BK,BK,__,__,__],
+    [BK,BK,ER,BK,BK,BK,BK,BK,BK,BK,BK,ER,BK,BK,__,__],
+    [BK,EY,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,EY,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,NS,BK,NS,BK,BK,BK,BK,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
+    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK], // arm out
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
+    [__,__,__,BK,BK,__,__,__,__,BK,BK,__,__,__,__,__],
+    [__,__,BK,BK,BK,BK,__,__,BK,BK,BK,BK,__,__,__,__],
+    [__,BK,BK,BK,BK,BK,__,__,BK,BK,BK,BK,BK,__,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__],
+  ];
+
+  // Frame 2 — arm raised up high (waving up)
+  const F2 = [
+    [__,__,BK,BK,__,__,__,__,__,__,BK,BK,__,__,__,__],
+    [__,BK,BK,BK,BK,__,__,__,__,BK,BK,BK,BK,__,__,__],
+    [BK,BK,ER,BK,BK,BK,BK,BK,BK,BK,BK,ER,BK,BK,__,__],
+    [BK,EY,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,EY,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,NS,BK,NS,BK,BK,BK,BK,BK,__,__],
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,BK,BK], // arm tip top-right
+    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,BK,BK], // arm upper
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__], // arm base joins body
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__], // arm pulled in
+    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
+    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
+    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
+    [__,__,__,BK,BK,__,__,__,__,BK,BK,__,__,__,__,__],
+    [__,__,BK,BK,BK,BK,__,__,BK,BK,BK,BK,__,__,__,__],
+    [__,BK,BK,BK,BK,BK,__,__,BK,BK,BK,BK,BK,__,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__],
+  ];
+
+  const canvas = document.getElementById('catCanvas');
+  canvas.width  = 16 * PS;
+  canvas.height = 18 * PS;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  function drawFrame(grid) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    grid.forEach((row, r) => {
+      row.forEach((color, c) => {
+        if (color) {
+          ctx.fillStyle = color;
+          ctx.fillRect(c * PS, r * PS, PS, PS);
+        }
+      });
+    });
+  }
+
+  drawFrame(F1);
+  let frameIdx = 0;
+  setInterval(() => {
+    frameIdx = 1 - frameIdx;
+    drawFrame(frameIdx === 0 ? F1 : F2);
+  }, 450);
+
+  // Click to dismiss intro & unlock background audio
+  const intro = document.getElementById('intro');
+  intro.addEventListener('click', () => {
+    intro.classList.add('hidden');
+    setTimeout(() => { intro.style.display = 'none'; }, 950);
+    document.dispatchEvent(new CustomEvent('intro-dismissed'));
+
+    // Start background music seamlessly on user gesture
+    if (siteAudio && siteAudio.paused) {
+      const playPromise = siteAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (typeof updateAudioUI === 'function') updateAudioUI(true);
+        }).catch(err => {
+          console.log('Audio autoplay prevented or waiting for interaction:', err);
+        });
+      }
+    }
+  });
+})();
+
+/* ── Particle system (floating dust / sparks) ── */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H + H;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = -(Math.random() * 0.5 + 0.2);
+    this.life = 1;
+    this.decay = Math.random() * 0.003 + 0.001;
+    this.size  = Math.random() * 1.5 + 0.5;
+    const hue  = Math.random() > 0.5 ? '270' : '330';
+    this.color = `hsla(${hue},70%,65%,`;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    this.life -= this.decay;
+    if (this.life <= 0 || this.y < -10) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color + this.life + ')';
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) {
+  const p = new Particle();
+  p.y = Math.random() * H; // scatter initially
+  particles.push(p);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ── GSAP Animations ── */
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Scroll progress bar ──
+gsap.to('#progress-bar', {
+  width: '100%',
+  ease: 'none',
+  scrollTrigger: { scrub: 0.3, start: 'top top', end: 'bottom bottom' }
+});
+
+// ── Hero entrance (fires after intro dismissed) ──
+const heroTl = gsap.timeline({ paused: true });
+heroTl
+  .fromTo('.avatar-frame',
+    { scale: 0.4, opacity: 0, rotation: -20 },
+    { scale: 1,   opacity: 1, rotation: 0,  duration: 0.9, ease: 'back.out(1.6)' }
+  )
+  .fromTo('.hero-deco-top',
+    { opacity: 0, y: -20 },
+    { opacity: 1, y: 0, duration: 0.5 }, '-=0.4'
+  )
+  .fromTo('.hero-title',
+    { opacity: 0, y: 25 },
+    { opacity: 1, y: 0,  duration: 0.5, ease: 'power3.out' }, '-=0.3'
+  )
+  .fromTo('.hero-name',
+    { opacity: 0, y: 50, skewX: -8 },
+    { opacity: 1, y: 0,  skewX: 0, duration: 0.75, ease: 'power3.out' }, '-=0.3'
+  )
+  .fromTo('.hero-ornament',
+    { opacity: 0, scaleX: 0 },
+    { opacity: 1, scaleX: 1, duration: 0.5, ease: 'power2.out' }, '-=0.2'
+  )
+  .fromTo('.hero-bio',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0,  duration: 0.5 }, '-=0.2'
+  )
+  .fromTo('.hero-tag',
+    { opacity: 0, y: 20, scale: 0.85 },
+    { opacity: 1, y: 0,  scale: 1,
+      duration: 0.4, stagger: 0.08, ease: 'back.out(1.7)' }, '-=0.2'
+  );
+
+// Set initial invisible state before hero animates
+gsap.set(['.avatar-frame','.hero-deco-top','.hero-title',
+          '.hero-name','.hero-ornament','.hero-bio','.hero-tag'],
+  { opacity: 0 }
+);
+
+// Play hero after intro dismissed
+document.addEventListener('intro-dismissed', () => {
+  setTimeout(() => heroTl.play(), 300);
+});
+
+// ── Section labels slide in ──
+gsap.utils.toArray('.section-label').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, x: -40 },
+    { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' } }
+  );
+});
+
+// ── Section titles clip reveal ──
+gsap.utils.toArray('.section-title').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 50, skewY: 2 },
+    { opacity: 1, y: 0, skewY: 0, duration: 0.85, ease: 'power4.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' } }
+  );
+});
+
+// ── About text paragraphs ──
+gsap.utils.toArray('.about-text p').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.6, delay: i * 0.12,
+      scrollTrigger: { trigger: el, start: 'top 90%' } }
+  );
+});
+
+// ── Fact rows stagger from left ──
+gsap.utils.toArray('.fact-row').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, x: -50 },
+    { opacity: 1, x: 0, duration: 0.5, delay: i * 0.07, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 92%' } }
+  );
+});
+
+// ── Game cards scrapbook stagger ──
+gsap.utils.toArray('.gc-card').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 40, scale: 0.92, rotation: i % 2 === 0 ? -3 : 3 },
+    { opacity: 1, y: 0,  scale: 1,    rotation: 0,
+      duration: 0.7, delay: (i % 2) * 0.12, ease: 'back.out(1.4)',
+      scrollTrigger: { trigger: el, start: 'top 92%' } }
+  );
+});
+
+// ── Floating deco icons stagger in ──
+gsap.utils.toArray('.gf').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, scale: 0 },
+    { opacity: 0.55, scale: 1,
+      duration: 0.5, delay: 0.3 + i * 0.08, ease: 'back.out(2)',
+      scrollTrigger: { trigger: '#games', start: 'top 80%' } }
+  );
+});
+
+// ── Gaming heading reveal ──
+gsap.fromTo('.gc-heading',
+  { opacity: 0, y: 50, skewY: 2 },
+  { opacity: 1, y: 0, skewY: 0, duration: 0.9, ease: 'power4.out',
+    scrollTrigger: { trigger: '.gc-heading', start: 'top 85%' } }
+);
+
+// ── Music player bar entrance ──
+gsap.fromTo('.music-player-bar',
+  { opacity: 0, y: 30, scale: 0.96 },
+  { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.4)',
+    scrollTrigger: { trigger: '.music-player-bar', start: 'top 88%' } }
+);
+
+// ── Artist cards scrapbook stagger ──
+gsap.utils.toArray('.artist-card').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 35, scale: 0.94 },
+    { opacity: 1, y: 0, scale: 1,
+      duration: 0.55, delay: (i % 3) * 0.08, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 92%' } }
+  );
+});
+
+// ── Floating music notes stagger in ──
+gsap.utils.toArray('.mf').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, scale: 0 },
+    { opacity: 0.45, scale: 1,
+      duration: 0.5, delay: 0.2 + (i * 0.06), ease: 'back.out(2)',
+      scrollTrigger: { trigger: '#vibe', start: 'top 80%' } }
+  );
+});
+
+// ── Native HTML5 Background Audio Player (Zhu's 15-Track Mixtape) ──
+const siteAudio = document.getElementById('site-audio');
+let isAudioPlaying = false;
+
+function updateAudioUI(playing) {
+  isAudioPlaying = playing;
+  const fp = document.getElementById('floating-player');
+  const fpIcon = document.getElementById('fp-play-icon');
+  const secBtn = document.getElementById('section-play-btn');
+  const secIcon = document.getElementById('section-play-icon');
+  const secText = document.getElementById('section-play-text');
+  const secDisc = document.getElementById('section-player-disc');
+  const deck = document.getElementById('turntable-deck');
+  const badge = document.querySelector('.player-badge');
+
+  if (fp) fp.classList.toggle('is-playing', playing);
+  if (fpIcon) fpIcon.textContent = playing ? '❚❚' : '▶';
+
+  if (deck) deck.classList.toggle('is-playing', playing);
+
+  if (secBtn) secBtn.classList.toggle('is-playing', playing);
+  if (secIcon) secIcon.textContent = playing ? '❚❚' : '▶';
+  if (secText) secText.textContent = playing ? 'PAUSE SONG' : 'PLAY SONG';
+  if (secDisc) {
+    secDisc.style.animationPlayState = playing ? 'running' : 'paused';
+  }
+  if (badge) {
+    badge.innerHTML = playing ? '<span>●</span> PLAYING ♡' : '<span>●</span> ON REPEAT ♡';
+  }
+
+  // Update indicators and vinyl state on artist cards
+  const cards = document.querySelectorAll('.artist-card');
+  cards.forEach(c => {
+    const ind = c.querySelector('.artist-play-indicator');
+    if (c.classList.contains('active')) {
+      c.classList.toggle('is-playing', playing);
+      if (ind) ind.textContent = playing ? '❚❚' : '▶';
+    } else {
+      c.classList.remove('is-playing');
+      if (ind) ind.textContent = '▶';
+    }
+  });
+}
+
+function playArtistCard(card, shouldPlay = true) {
+  const cards = document.querySelectorAll('.artist-card');
+  cards.forEach(c => {
+    c.classList.remove('active', 'is-playing');
+    const ind = c.querySelector('.artist-play-indicator');
+    if (ind) ind.textContent = '▶';
+  });
+  card.classList.add('active');
+
+  const artist = card.getAttribute('data-artist');
+  const track = card.getAttribute('data-track');
+  const thumb = card.getAttribute('data-thumb');
+  const audioSrc = card.getAttribute('data-audio');
+  const sub = card.getAttribute('data-sub') || `${track} • now spinning on Zhu's Mixtape ♡`;
+
+  const trackEl = document.getElementById('section-player-track');
+  const subEl = document.getElementById('section-player-sub');
+  const disc = document.getElementById('section-player-disc');
+  const secBtn = document.getElementById('section-play-btn');
+  const vinylArt = document.getElementById('vinyl-center-art');
+
+  if (trackEl) trackEl.textContent = `${artist} — ${track}`;
+  if (subEl) subEl.textContent = sub;
+  if (secBtn) secBtn.title = `Play '${track}' by ${artist}`;
+  if (vinylArt && thumb) vinylArt.src = thumb;
+
+  // Update floating player info
+  const fpTitle = document.getElementById('fp-title');
+  const fpArtist = document.getElementById('fp-artist');
+  const fpThumb = document.getElementById('fp-thumb');
+  const fpPlayBtn = document.getElementById('fp-play-btn');
+  if (fpTitle) fpTitle.textContent = track;
+  if (fpArtist) fpArtist.innerHTML = `${artist} • <span class="fp-tag">Mixtape</span>`;
+  if (fpThumb && thumb) fpThumb.src = thumb;
+  if (fpPlayBtn) fpPlayBtn.title = `Play '${track}' by ${artist}`;
+
+  // Spin disc briefly faster
+  if (disc) {
+    disc.style.animationDuration = '1.2s';
+    setTimeout(() => { disc.style.animationDuration = '3.8s'; }, 2500);
+  }
+
+  if (siteAudio && audioSrc) {
+    const currentAudio = siteAudio.getAttribute('data-current');
+    if (currentAudio !== audioSrc) {
+      siteAudio.setAttribute('data-current', audioSrc);
+      siteAudio.src = audioSrc;
+      siteAudio.load();
+    }
+    if (shouldPlay) {
+      const playPromise = siteAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          updateAudioUI(true);
+        }).catch(err => {
+          console.warn('Audio playback error:', err);
+        });
+      }
+    } else {
+      updateAudioUI(false);
+    }
+  }
+}
+
+function toggleAudio() {
+  if (!siteAudio) return;
+  if (siteAudio.paused) {
+    const activeCard = document.querySelector('.artist-card.active') || document.querySelector('.artist-card');
+    if (activeCard && !siteAudio.getAttribute('data-current')) {
+      playArtistCard(activeCard, true);
+      return;
+    }
+    const playPromise = siteAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        updateAudioUI(true);
+      }).catch(err => {
+        console.warn('Playback error:', err);
+      });
+    }
+  } else {
+    siteAudio.pause();
+    updateAudioUI(false);
+  }
+}
+
+if (siteAudio) {
+  siteAudio.addEventListener('play', () => updateAudioUI(true));
+  siteAudio.addEventListener('pause', () => updateAudioUI(false));
+  siteAudio.addEventListener('ended', () => {
+    // Continuous Mixtape: auto-advance to next artist card
+    const cards = Array.from(document.querySelectorAll('.artist-card'));
+    const currentIndex = cards.findIndex(c => c.classList.contains('active'));
+    const nextIndex = (currentIndex + 1) % cards.length;
+    playArtistCard(cards[nextIndex], true);
+  });
+
+  // Sync real song progress and time displays
+  siteAudio.addEventListener('timeupdate', () => {
+    const fill = document.getElementById('fp-progress-fill');
+    const ttFill = document.getElementById('tt-progress-fill');
+    const timeCur = document.getElementById('time-current');
+    const timeTot = document.getElementById('time-total');
+
+    if (siteAudio.duration) {
+      const pct = (siteAudio.currentTime / siteAudio.duration) * 100;
+      if (fill) fill.style.width = pct + '%';
+      if (ttFill) ttFill.style.width = pct + '%';
+
+      if (timeCur) {
+        const curMin = Math.floor(siteAudio.currentTime / 60);
+        const curSec = Math.floor(siteAudio.currentTime % 60).toString().padStart(2, '0');
+        timeCur.textContent = `${curMin}:${curSec}`;
+      }
+      if (timeTot && !isNaN(siteAudio.duration)) {
+        const totMin = Math.floor(siteAudio.duration / 60);
+        const totSec = Math.floor(siteAudio.duration % 60).toString().padStart(2, '0');
+        timeTot.textContent = `${totMin}:${totSec}`;
+      }
+    }
+  });
+
+  // Allow clicking on progress bars to scrub / seek
+  const progBar = document.querySelector('.fp-progress-bar');
+  if (progBar) {
+    progBar.style.cursor = 'pointer';
+    progBar.addEventListener('click', (e) => {
+      if (!siteAudio || !siteAudio.duration) return;
+      const rect = progBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      siteAudio.currentTime = pct * siteAudio.duration;
+    });
+  }
+
+  const ttProgBar = document.getElementById('tt-progress-bar');
+  if (ttProgBar) {
+    ttProgBar.addEventListener('click', (e) => {
+      if (!siteAudio || !siteAudio.duration) return;
+      const rect = ttProgBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      siteAudio.currentTime = pct * siteAudio.duration;
+    });
+  }
+}
+
+const fpPlayBtn = document.getElementById('fp-play-btn');
+if (fpPlayBtn) fpPlayBtn.addEventListener('click', toggleAudio);
+
+const secPlayBtn = document.getElementById('section-play-btn');
+if (secPlayBtn) secPlayBtn.addEventListener('click', toggleAudio);
+
+const turntableDeck = document.getElementById('turntable-deck');
+if (turntableDeck) turntableDeck.addEventListener('click', toggleAudio);
+
+// Previous / Next artist track buttons
+const prevBtn = document.getElementById('prev-track-btn');
+const nextBtn = document.getElementById('next-track-btn');
+if (prevBtn) {
+  prevBtn.addEventListener('click', () => {
+    const cards = Array.from(document.querySelectorAll('.artist-card'));
+    const currentIndex = cards.findIndex(c => c.classList.contains('active'));
+    const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+    playArtistCard(cards[prevIndex], true);
+  });
+}
+if (nextBtn) {
+  nextBtn.addEventListener('click', () => {
+    const cards = Array.from(document.querySelectorAll('.artist-card'));
+    const currentIndex = cards.findIndex(c => c.classList.contains('active'));
+    const nextIndex = (currentIndex + 1) % cards.length;
+    playArtistCard(cards[nextIndex], true);
+  });
+}
+
+// ── Interactive Favorite Artists Click & Player Sync ──
+(function() {
+  const cards = document.querySelectorAll('.artist-card');
+
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      // If clicking directly on the Spotify external arrow, let it open Spotify in new tab
+      if (e.target.closest('.artist-arrow')) {
+        return; // normal anchor navigation to Spotify
+      }
+
+      // Otherwise, keep the user on the page and play this artist's song!
+      e.preventDefault();
+
+      if (card.classList.contains('active') && isAudioPlaying) {
+        // Toggle pause if clicking the currently playing card
+        siteAudio.pause();
+        updateAudioUI(false);
+      } else {
+        playArtistCard(card, true);
+      }
+
+      // spawn cute music notes burst from card
+      const rect = card.getBoundingClientRect();
+      const wrap = document.getElementById('vibe');
+      if (wrap) {
+        const wrapRect = wrap.getBoundingClientRect();
+        for (let i = 0; i < 6; i++) {
+          const spark = document.createElement('span');
+          spark.textContent = ['♪', '♡', '♫', '✦', '♩'][Math.floor(Math.random() * 5)];
+          spark.style.cssText = `
+            position: absolute; font-size: 1rem; color: var(--lilac);
+            pointer-events: none; z-index: 20;
+            left: ${rect.left - wrapRect.left + rect.width / 2}px;
+            top: ${rect.top - wrapRect.top + rect.height / 2}px;
+          `;
+          wrap.appendChild(spark);
+          gsap.to(spark, {
+            x: (Math.random() - 0.5) * 80,
+            y: -30 - Math.random() * 50,
+            opacity: 0, scale: 1.4,
+            duration: 0.8 + Math.random() * 0.4,
+            ease: 'power2.out',
+            onComplete: () => spark.remove()
+          });
+        }
+      }
+    });
+  });
+})();
+
+// ── Shrine quote word-by-word ──
+const quote = document.querySelector('blockquote');
+if (quote) {
+  gsap.fromTo(quote,
+    { opacity: 0, y: 40, filter: 'blur(8px)' },
+    { opacity: 1, y: 0,  filter: 'blur(0px)', duration: 1.1, ease: 'power3.out',
+      scrollTrigger: { trigger: quote, start: 'top 85%' } }
+  );
+}
+
+// ── Contact heading ──
+gsap.fromTo('.contact-heading',
+  { opacity: 0, y: 70 },
+  { opacity: 1, y: 0, duration: 1, ease: 'power4.out',
+    scrollTrigger: { trigger: '.contact-heading', start: 'top 80%' } }
+);
+
+// ── Magnetic nav links ──
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('mousemove', e => {
+    const r = link.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width  / 2) * 0.4;
+    const y = (e.clientY - r.top  - r.height / 2) * 0.4;
+    gsap.to(link, { x, y, duration: 0.3, ease: 'power2.out' });
+  });
+  link.addEventListener('mouseleave', () => {
+    gsap.to(link, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,0.5)' });
+  });
+});
+
+// ── Dividers draw in ──
+gsap.utils.toArray('.divider').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, letterSpacing: '0.2em' },
+    { opacity: 1, letterSpacing: '0.8em', duration: 0.8, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 90%' } }
+  );
+});
+
+
+/* ── Book of Lore ── */
+/* ── Book entrance on scroll ── */
+gsap.fromTo('.book-wrap',
+  { opacity: 0, y: 80, rotationX: 12, transformPerspective: 900 },
+  { opacity: 1, y: 0, rotationX: 0,  duration: 1.1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.book-wrap', start: 'top 85%' } }
+);
+
+/* ── Book idle float ── */
+gsap.to('#bio-book', {
+  y: -6, duration: 2.8, ease: 'sine.inOut', yoyo: true, repeat: -1
+});
+
+/* ── Spine shimmer pulse ── */
+gsap.to('.book-spine', {
+  boxShadow: '0 0 18px rgba(192,132,252,0.7), 0 0 36px rgba(155,77,202,0.4)',
+  duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1
+});
+
+/* ── Book 3D mouse-follow tilt ── */
+(function() {
+  const scene = document.getElementById('bio-book');
+  const sp    = document.getElementById('book-spread');
+  if (!scene || !sp) return;
+  scene.addEventListener('mousemove', e => {
+    const r = scene.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width  - 0.5) * 12;
+    const y = ((e.clientY - r.top)  / r.height - 0.5) * -7;
+    gsap.to(sp, { rotationY: x, rotationX: y,
+      transformPerspective: 1200, duration: 0.4, ease: 'power2.out' });
+  });
+  scene.addEventListener('mouseleave', () => {
+    gsap.to(sp, { rotationY: 0, rotationX: 0,
+      duration: 0.9, ease: 'elastic.out(1, 0.5)' });
+  });
+})();
+
+/* ── Book interactive logic ── */
+(function () {
+  const spreads = [
+    {
+      left:  { title:'The Introduction',
+        text:'Hi, I\'m Zhu. Welcome to my little corner of the internet! I\'m the type of person who\'s incredibly loud and talkative in group chats, but once you meet me in person, you\'ll probably wonder if I\'m the same person.<br/><br/>I\'m naturally quiet and shy, and socializing face-to-face isn\'t exactly my strongest skill. Crowded places drain my social battery faster than I\'d like to admit, so I usually prefer staying in my own little bubble.',
+        num:'— i —' },
+      right: { title:'The Daily Life',
+        text:'Most of my free time is spent doomscrolling, listening to music, watching random videos, or playing games that I somehow never get good at, no matter how many hours I put into them.<br/><br/>I jump between different games depending on my mood, occasionally convince myself that I\'m improving, and then proceed to get absolutely humbled in the next match. It\'s a never-ending cycle, honestly.',
+        num:'— ii —' }
+    },
+    {
+      left:  { title:'The Academic Arc',
+        text:'Academically speaking, I\'m currently getting cooked by school. Between deadlines, activities, group projects, and everything else that comes with being a student, I\'m just trying to survive one requirement at a time.<br/><br/>Some days I\'m productive, other days I\'m simply existing and hoping everything works out. We\'re all doing our best here.',
+        num:'— iii —' },
+      right: { title:'The Creative Side',
+        text:'Aside from gaming and academic struggles, I also enjoy making random websites whenever an idea suddenly pops into my head. I like experimenting with layouts, colors, animations, and different design concepts — even when I have absolutely no idea what I\'m doing.<br/><br/>Sometimes I start a project just because I think something would look cool, and somehow end up spending hours tweaking the smallest details.',
+        num:'— iv —' }
+    },
+    {
+      left:  { title:'The Disclaimer',
+        text:'And before you start judging my websites, please remember that I\'m just doing this for fun. I\'m not claiming to be a professional developer or designer.<br/><br/>I\'m simply someone who enjoys creating things, experimenting with ideas, and occasionally making a completely unnecessary website instead of doing something more productive.',
+        num:'— v —' },
+      right: { title:'The Final Note',
+        text:'So, that\'s pretty much me. A little shy, chronically online, academically exhausted, creatively curious, and occasionally competitive.<br/><br/>Loud on the internet, quiet in person, and somehow always busy doing absolutely everything except what I\'m supposed to be doing. ⋆‧°𓏲ּ𝄢',
+        num:'— vi —' }
+    }
+  ];
+
+  let cur = 0;
+  const spread  = document.getElementById('book-spread');
+  const prevBtn = document.getElementById('book-prev');
+  const nextBtn = document.getElementById('book-next');
+  const dotsEl  = document.getElementById('book-dots');
+
+  spreads.forEach((_, i) => {
+    const d = document.createElement('span');
+    d.className = 'book-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i, i > cur ? 'next' : 'prev'));
+    dotsEl.appendChild(d);
+  });
+
+  function spawnPageDust(dir) {
+    const wrap = document.querySelector('.book-wrap');
+    const r    = wrap.getBoundingClientRect();
+    const cx   = dir === 'next' ? r.right - r.left - 20 : 20;
+    const cy   = r.height / 2;
+    const count = 14;
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('span');
+      dot.style.cssText = `
+        position:absolute; width:5px; height:5px; border-radius:50%;
+        background:hsl(${270 + Math.random()*60},80%,75%);
+        pointer-events:none; z-index:10;
+        left:${cx}px; top:${cy}px;
+      `;
+      wrap.appendChild(dot);
+      const angle = (Math.random() * 260 + (dir === 'next' ? 200 : -60)) * Math.PI / 180;
+      const dist  = Math.random() * 80 + 40;
+      gsap.to(dot, {
+        x: Math.cos(angle) * dist,
+        y: Math.sin(angle) * dist,
+        opacity: 0, scale: 0,
+        duration: 0.6 + Math.random() * 0.4,
+        ease: 'power2.out',
+        onComplete: () => dot.remove()
+      });
+    }
+  }
+
+  function animatePageContent() {
+    gsap.fromTo(
+      '#book-spread .page-title, #book-spread .page-text, #book-spread .page-num',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.4, stagger: 0.07, ease: 'power2.out', delay: 0.15 }
+    );
+  }
+
+  function renderSpread(idx) {
+    const s = spreads[idx];
+    document.getElementById('ltitle').textContent = s.left.title;
+    document.getElementById('lnum').textContent   = s.left.num;
+    document.getElementById('ltext').innerHTML    = s.left.text;
+    document.getElementById('rtitle').textContent = s.right.title;
+    document.getElementById('rnum').textContent   = s.right.num;
+    document.getElementById('rtext').innerHTML    = s.right.text;
+    document.querySelectorAll('.book-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === idx)
+    );
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === spreads.length - 1;
+  }
+
+  function goTo(idx, dir) {
+    if (idx === cur || idx < 0 || idx >= spreads.length) return;
+    spawnPageDust(dir);
+    const tl = gsap.timeline();
+    tl.to(spread, {
+      rotationY: dir === 'next' ? -18 : 18,
+      x:         dir === 'next' ? -28 : 28,
+      opacity: 0,
+      transformPerspective: 1000,
+      duration: 0.25, ease: 'power2.in'
+    })
+    .call(() => { cur = idx; renderSpread(cur); })
+    .fromTo(spread,
+      { rotationY: dir === 'next' ? 18 : -18, x: dir === 'next' ? 28 : -28, opacity: 0 },
+      { rotationY: 0, x: 0, opacity: 1,
+        transformPerspective: 1000, duration: 0.32, ease: 'power2.out' }
+    )
+    .call(animatePageContent);
+  }
+
+  [prevBtn, nextBtn].forEach(btn => {
+    btn.addEventListener('click', () =>
+      gsap.fromTo(btn, { scale: 0.8 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' })
+    );
+  });
+
+  prevBtn.addEventListener('click', () => goTo(cur - 1, 'prev'));
+  nextBtn.addEventListener('click', () => goTo(cur + 1, 'next'));
+
+  renderSpread(0);
+  animatePageContent();
+})();
+
+</script>
+</body>
+</html>
