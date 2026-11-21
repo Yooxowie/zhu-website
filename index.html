@@ -2174,61 +2174,76 @@
 
 /* ── Pixel Cat + Intro ── */
 (function () {
-  const PS = 15; // size of each "pixel" in real px
+  const PS = 10; // size of each pixel in real px (24 * 10 = 240x240)
 
-  const BK = '#1a0a2e'; // body: dark purple-black
-  const EY = '#d8b4fe'; // eyes: soft lilac
-  const NS = '#f472b6'; // nose: pink
-  const ER = '#5b21b6'; // inner ear: violet
-  const __ = null;      // transparent
+  const __ = null;
+  const BK = '#0c0514'; // Outline / Deep Dark
+  const FD = '#1c0e2a'; // Dark Fur Shade
+  const FM = '#341a4c'; // Main Purple-Black Fur
+  const FL = '#582c7e'; // Fur Highlight
+  const PK = '#f472b6'; // Pink inner ear / nose / toe pads
+  const PL = '#fbcfe8'; // Light pink blush
+  const WH = '#faf5ff'; // White / Cream Bib & Paws
+  const WL = '#d8b4fe'; // Lilac shadow on white
+  const EY = '#c084fc'; // Bright Amethyst
+  const ED = '#7c3aed'; // Violet Iris
+  const PU = '#10061c'; // Eye Pupil
+  const SP = '#ffffff'; // Eye Sparkle Highlight
+  const WK = 'rgba(226, 200, 250, 0.75)'; // Whisker
 
-  // Frame 1 — arm extended horizontally (waving out)
+  // Frame 1: Resting cute, big sparkling eyes, curled tail
   const F1 = [
-    [__,__,BK,BK,__,__,__,__,__,__,BK,BK,__,__,__,__],
-    [__,BK,BK,BK,BK,__,__,__,__,BK,BK,BK,BK,__,__,__],
-    [BK,BK,ER,BK,BK,BK,BK,BK,BK,BK,BK,ER,BK,BK,__,__],
-    [BK,EY,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,EY,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,NS,BK,NS,BK,BK,BK,BK,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
-    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK], // arm out
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
-    [__,__,__,BK,BK,__,__,__,__,BK,BK,__,__,__,__,__],
-    [__,__,BK,BK,BK,BK,__,__,BK,BK,BK,BK,__,__,__,__],
-    [__,BK,BK,BK,BK,BK,__,__,BK,BK,BK,BK,BK,__,__,__],
-    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__],
+    [__,__,__,__,BK,BK,__,__,__,__,__,__,__,__,__,__,BK,BK,__,__,__,__,__,__],
+    [__,__,__,BK,FL,FM,BK,__,__,__,__,__,__,__,__,BK,FM,FL,BK,__,__,__,__,__],
+    [__,__,BK,FL,PK,FM,FM,BK,__,__,__,__,__,__,BK,FM,FM,PK,FL,BK,__,__,__,__],
+    [__,__,BK,FM,PK,PK,FM,BK,BK,BK,BK,BK,BK,BK,BK,FM,PK,PK,FM,BK,__,__,__,__],
+    [__,BK,FM,FM,PK,FM,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FM,PK,FM,FM,BK,__,__,__],
+    [__,BK,FM,FM,FM,FL,FL,FM,FM,FM,FM,FM,FM,FM,FM,FL,FL,FM,FM,FM,BK,__,__,__],
+    [BK,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,BK,__,__],
+    [BK,FM,FM,BK,BK,BK,BK,FM,FM,FM,FM,FM,FM,BK,BK,BK,BK,FM,FM,FM,BK,__,__,__],
+    [BK,FM,BK,SP,SP,PU,ED,BK,FM,FM,FM,FM,BK,SP,SP,PU,ED,BK,FM,FM,BK,__,__,__],
+    [BK,FM,BK,SP,PU,EY,ED,BK,FM,PK,PK,FM,BK,SP,PU,EY,ED,BK,FM,FM,BK,__,__,__],
+    [WK,BK,PL,BK,EY,EY,BK,PL,FM,BK,BK,FM,PL,BK,EY,EY,BK,PL,BK,WK,__,__,__,__],
+    [__,WK,BK,BK,BK,BK,FM,FM,BK,WH,WH,BK,FM,FM,BK,BK,BK,BK,WK,__,__,__,__,__],
+    [WK,__,__,BK,FM,FM,FM,WH,WH,WH,WH,WH,WH,FM,FM,FM,BK,__,__,WK,__,__,__,__],
+    [__,__,BK,FM,FM,FM,WH,WH,SP,WH,WH,SP,WH,WH,FM,FM,FM,BK,__,__,__,__,__,__],
+    [__,__,BK,FM,FM,FM,WH,WH,WH,WH,WH,WH,WH,WH,FM,FM,FM,BK,__,__,__,__,__,__],
+    [__,__,BK,FM,FM,FM,FM,WH,WL,WH,WH,WL,WH,FM,FM,FM,FM,BK,__,__,__,BK,BK,__],
+    [__,__,BK,FM,FM,FM,BK,WH,WH,BK,BK,WH,WH,BK,FM,FM,FM,BK,__,__,BK,FL,FM,BK],
+    [__,__,BK,FM,FM,BK,WH,WH,WH,BK,BK,WH,WH,WH,BK,FM,FM,BK,__,BK,FM,PK,FL,BK],
+    [__,__,BK,BK,BK,WH,PK,WH,PK,BK,BK,PK,WH,PK,WH,BK,BK,BK,__,BK,FM,FM,BK,__],
+    [__,__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,FL,FM,BK,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,BK,FM,FL,BK,__,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,BK,BK,BK,__,__,__,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__],
+    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__]
   ];
 
-  // Frame 2 — arm raised up high (waving up)
-  const F2 = [
-    [__,__,BK,BK,__,__,__,__,__,__,BK,BK,__,__,__,__],
-    [__,BK,BK,BK,BK,__,__,__,__,BK,BK,BK,BK,__,__,__],
-    [BK,BK,ER,BK,BK,BK,BK,BK,BK,BK,BK,ER,BK,BK,__,__],
-    [BK,EY,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,EY,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,NS,BK,NS,BK,BK,BK,BK,BK,__,__],
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__],
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,BK,BK], // arm tip top-right
-    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,BK,BK], // arm upper
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__], // arm base joins body
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__], // arm pulled in
-    [BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
-    [__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__],
-    [__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,__,__,__,__],
-    [__,__,__,BK,BK,__,__,__,__,BK,BK,__,__,__,__,__],
-    [__,__,BK,BK,BK,BK,__,__,BK,BK,BK,BK,__,__,__,__],
-    [__,BK,BK,BK,BK,BK,__,__,BK,BK,BK,BK,BK,__,__,__],
-    [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__],
-  ];
+  // Frame 2: Blinking / happy closed eyes + slight tail wag
+  const F2 = F1.map(r => [...r]);
+  F2[7]  = [BK,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,FM,BK,__,__];
+  F2[8]  = [BK,FM,FM,BK,BK,BK,BK,FM,FM,FM,FM,FM,FM,BK,BK,BK,BK,FM,FM,FM,BK,__,__,__];
+  F2[9]  = [BK,FM,BK,EY,EY,EY,EY,BK,FM,PK,PK,FM,BK,EY,EY,EY,EY,BK,FM,FM,BK,__,__,__];
+  F2[10] = [WK,BK,PL,BK,BK,BK,BK,PL,FM,BK,BK,FM,PL,BK,BK,BK,BK,PL,BK,WK,__,__,__,__];
+  F2[15] = [__,__,BK,FM,FM,FM,FM,WH,WL,WH,WH,WL,WH,FM,FM,FM,FM,BK,__,__,BK,BK,__,__];
+  F2[16] = [__,__,BK,FM,FM,FM,BK,WH,WH,BK,BK,WH,WH,BK,FM,FM,FM,BK,__,BK,FL,FM,BK,__];
+  F2[17] = [__,__,BK,FM,FM,BK,WH,WH,WH,BK,BK,WH,WH,WH,BK,FM,FM,BK,__,BK,FM,PK,BK,__];
+  F2[18] = [__,__,BK,BK,BK,WH,PK,WH,PK,BK,BK,PK,WH,PK,WH,BK,BK,BK,__,BK,FM,FL,BK,__];
+  F2[19] = [__,__,__,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,BK,FM,FM,BK,__,__];
+  F2[20] = [__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,BK,BK,BK,__,__,__,__];
+
+  // Frame 3: Waving right paw with pink toe beans!
+  const F3 = F1.map(r => [...r]);
+  F3[13] = [__,__,BK,FM,FM,FM,WH,WH,SP,WH,WH,SP,WH,WH,FM,FM,FM,BK,__,BK,BK,BK,__,__];
+  F3[14] = [__,__,BK,FM,FM,FM,WH,WH,WH,WH,WH,WH,WH,WH,FM,FM,BK,WH,BK,WH,PK,WH,BK,__];
+  F3[15] = [__,__,BK,FM,FM,FM,FM,WH,WL,WH,WH,WL,WH,FM,FM,BK,WH,PK,WH,PK,WH,BK,BK,__];
+  F3[16] = [__,__,BK,FM,FM,FM,BK,WH,WH,BK,BK,WH,WH,BK,FM,FM,BK,BK,BK,BK,BK,FL,FM,BK];
+  F3[17] = [__,__,BK,FM,FM,BK,WH,WH,WH,BK,BK,FM,FM,FM,FM,FM,FM,BK,__,BK,FM,PK,FL,BK];
+  F3[18] = [__,__,BK,BK,BK,WH,PK,WH,PK,BK,BK,FM,FM,FM,FM,FM,BK,BK,__,BK,FM,FM,BK,__];
 
   const canvas = document.getElementById('catCanvas');
-  canvas.width  = 16 * PS;
-  canvas.height = 18 * PS;
+  canvas.width  = 24 * PS;
+  canvas.height = 24 * PS;
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
 
@@ -2244,12 +2259,13 @@
     });
   }
 
+  const animationSeq = [F1, F1, F1, F2, F1, F3, F3, F1];
+  let seqIdx = 0;
   drawFrame(F1);
-  let frameIdx = 0;
   setInterval(() => {
-    frameIdx = 1 - frameIdx;
-    drawFrame(frameIdx === 0 ? F1 : F2);
-  }, 450);
+    seqIdx = (seqIdx + 1) % animationSeq.length;
+    drawFrame(animationSeq[seqIdx]);
+  }, 380);
 
   // Click to dismiss intro & unlock background audio
   const intro = document.getElementById('intro');
